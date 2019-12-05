@@ -30,10 +30,8 @@ foreach($line in Get-Content $FileBrowser.FileName) {
 
 # create join.bat
 New-Item -Path $DesktopPath\$film\join.bat -ItemType File
-Add-Content -Path $DesktopPath\$film\join.bat "copy /b *.ts $film.ts"  
-Add-Content -Path $DesktopPath\$film\join.bat "move $film.ts $DesktopPath"  
-
-Start-Process C:\Users\Laurenz.Faehnrich\Desktop\run.bat
+Add-Content -Path $DesktopPath\$film\join.bat "copy /b $DesktopPath\$film\*.ts $DesktopPath\$film.ts"  
+Start-Process $DesktopPath\$film\join.bat
 
 Write-Host "!!! FERTIG !!!"
 Write-Host "!!! FERTIG !!!"
