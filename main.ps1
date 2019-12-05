@@ -33,7 +33,7 @@ New-Item -Path $DesktopPath\$film\join.bat -ItemType File
 Add-Content -Path $DesktopPath\$film\join.bat "copy /b *.ts $film.ts"  
 Add-Content -Path $DesktopPath\$film\join.bat "move $film.ts $DesktopPath"  
 
-
+Start-Process C:\Users\Laurenz.Faehnrich\Desktop\run.bat
 
 Write-Host "!!! FERTIG !!!"
 Write-Host "!!! FERTIG !!!"
