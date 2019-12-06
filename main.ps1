@@ -1,13 +1,4 @@
-﻿$film = "EnterFilmName"
-
-#get desktop path & create folder
-$DesktopPath = [Environment]::GetFolderPath("Desktop")
-New-Item -ItemType directory -Path $DesktopPath\$film
-
-#init download Object
-$WebClient = New-Object System.Net.WebClient
-
-# Open file dialog to get m3u file
+# Open file dialog to get playlist file
 Add-Type -AssemblyName System.Windows.Forms
 
 $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{ 
@@ -16,22 +7,31 @@ $FileBrowser = New-Object System.Windows.Forms.OpenFileDialog -Property @{
 }
 $null = $FileBrowser.ShowDialog()
 
+$filename = $FileBrowser.SafeFileName -replace ".{4}$" -replace(' ' , '')
+
+#get desktop path & create folder
+$DesktopPath = [Environment]::GetFolderPath("Desktop")
+New-Item -ItemType directory -Path $DesktopPath\$filename
+
+#init download Object
+$WebClient = New-Object System.Net.WebClient
+
 $n = 1000
 
 foreach($line in Get-Content $FileBrowser.FileName) {
 
     if($line -match "http"){
         Write-Host "Downloading File $n"
-        $WebClient.DownloadFile("$line","$DesktopPath\$film\$n.ts")
+        $WebClient.DownloadFile("$line","$DesktopPath\$filename\$n.ts")
         $n++
     }
 }
 
 
 # create join.bat
-New-Item -Path $DesktopPath\$film\join.bat -ItemType File
-Add-Content -Path $DesktopPath\$film\join.bat "copy /b $DesktopPath\$film\*.ts $DesktopPath\$film.ts"  
-Start-Process $DesktopPath\$film\join.bat
+New-Item -Path $DesktopPath\$filename\join.bat -ItemType File
+Add-Content -Path $DesktopPath\$filename\join.bat "copy /b $DesktopPath\$filename\*.ts $DesktopPath\$filename.ts"  
+Start-Process $DesktopPath\$filename\join.bat
 
 Write-Host "!!! FERTIG !!!"
 Write-Host "!!! FERTIG !!!"
